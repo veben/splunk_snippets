@@ -1,0 +1,54 @@
+networks:
+  splunknet:
+    driver: bridge
+    attachable: true
+
+services:
+  indexer:
+    networks:
+      splunknet:
+        aliases:
+          - indexer
+    image: ${INDEXER_IMAGE:-splunk/splunk:latest}
+    hostname: indexer
+    container_name: indexer
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_STANDALONE_URL=indexer
+      - SPLUNK_PASSWORD
+    ports:
+      - 8000:8000
+    volumes:
+      - /var/log:/var/log
+
+  # Script that write random logs to /var/log/random.log file
+  # See: https://github.com/veben/go_random_logger
+  logger:
+    networks:
+      splunknet:
+        aliases:
+          - logger
+    image: ${LOGGER_IMAGE:-ghcr.io/veben/go_random_logger/go_random_logger:latest}
+    volumes:
+      - /var/log:/var/log
+
+  universalforwarder:
+    networks:
+      splunknet:
+        aliases:
+          - universalforwarder
+    image: ${UF_IMAGE:-splunk/universalforwarder:latest}
+    hostname: universalforwarder
+    container_name: universalforwarder
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_STANDALONE_URL=indexer # equivalent to /opt/splunkforwarder/bin/splunk add forward-server splunk-indexer:9997
+      - SPLUNK_ADD=monitor /var/log/random.log # equivalent to ./opt/splunkforwarder/bin/splunk add monitor '/var/log/random.log'
+      - SPLUNK_PASSWORD
+    ports:
+      - 9997:9997
+    volumes:
+      - /var/log:/var/log
+    depends_on:
+      - indexer
+      - logger
