@@ -6,13 +6,16 @@ As described in the `docker-compose.yml`, this setup leverages three different r
 3. **Logger**: Writes random logs to the `/var/log/random.log` file
 
 ## I. Prerequisites
-**Docker** installed on your system
+- **Docker** must be installed on your system.
+- **Docker Compose** must be installed on your system.
 
 ## II. Launching
-To launch the containers, replace `<complex_password>` with a secure password:
+To launch the containers, use this command, replacing `<complex_password>` with a secure password:
 ```sh
 SPLUNK_PASSWORD=<complex_password> docker-compose up -d
 ```
+
+It takes a few minutes for all containers to launch properly. You can check their status using the `docker container ls` command.
 
 ## III. Testing log indexing
 1. Open a web browser and go to `http://localhost:8000`

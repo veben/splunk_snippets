@@ -19,9 +19,9 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - /var/log:/var/log
+      - ${LOGS_FOLDER}:${LOGS_FOLDER}
 
-  # Script that write random logs to /var/log/random.log file
+  # Script that write random logs to ${LOGS_FOLDER}/${LOGS_FILE} file
   # See: https://github.com/veben/go_random_logger
   logger:
     networks:
@@ -30,7 +30,7 @@ services:
           - logger
     image: ${LOGGER_IMAGE:-ghcr.io/veben/go_random_logger/go_random_logger:latest}
     volumes:
-      - /var/log:/var/log
+      - ${LOGS_FOLDER}:${LOGS_FOLDER}
 
   universalforwarder:
     networks:
@@ -43,12 +43,12 @@ services:
     environment:
       - SPLUNK_START_ARGS=--accept-license
       - SPLUNK_STANDALONE_URL=indexer # equivalent to /opt/splunkforwarder/bin/splunk add forward-server splunk-indexer:9997
-      - SPLUNK_ADD=monitor /var/log/random.log # equivalent to ./opt/splunkforwarder/bin/splunk add monitor '/var/log/random.log'
+      - SPLUNK_ADD=monitor ${LOGS_FOLDER}/${LOGS_FILE} # equivalent to ./opt/splunkforwarder/bin/splunk add monitor '${LOGS_FOLDER}/${LOGS_FILE}'
       - SPLUNK_PASSWORD
     ports:
       - 9997:9997
     volumes:
-      - /var/log:/var/log
+      - ${LOGS_FOLDER}:${LOGS_FOLDER}
     depends_on:
       - indexer
       - logger
