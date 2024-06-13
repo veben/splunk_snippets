@@ -5,6 +5,8 @@ As described in the `docker-compose.yml`, this setup leverages three different r
 2. **Universal Forwarder**: Forwards logs to the indexer
 3. **Logger**: Writes random logs to the `/var/log/random.log` file
 
+<img src="resources/images/splunk-uf.svg" alt="splunk uf" style="width:500px;height:auto;">
+
 ## I. Prerequisites
 - **Docker** must be installed on your system.
 - **Docker Compose** must be installed on your system.
@@ -20,24 +22,24 @@ It takes a few minutes for all containers to launch properly. You can check thei
 ## III. Testing log indexing
 1. Open a web browser and go to `http://localhost:8000`
 
-<img src="resources/login.png" alt="login" style="width:500px;height:auto;">
+<img src="resources/images/login.png" alt="login" style="width:500px;height:auto;">
 
 2. Log in with the username `admin` and the password you set (`<complex_password>`).
 3. Navigate to **Search & Reporting**
 
-<img src="resources/search_reporting.png" alt="search & reporting" style="width:500px;height:auto;">
+<img src="resources/images/search_reporting.png" alt="search & reporting" style="width:500px;height:auto;">
 
 4. Click on **Data Summary**
 
-<img src="resources/data_summary.png" alt="data_summary" style="width:500px;height:auto;">
+<img src="resources/images/data_summary.png" alt="data_summary" style="width:500px;height:auto;">
 
 5. Select the host **universalforwarder** to view incoming logs
 
-<img src="resources/host.png" alt="host" style="width:500px;height:auto;">
+<img src="resources/images/host.png" alt="host" style="width:500px;height:auto;">
 
 6. Verify the logs are received
 
-<img src="resources/indexing.png" alt="indexing" style="width:500px;height:auto;">
+<img src="resources/images/indexing.png" alt="indexing" style="width:500px;height:auto;">
 
 ## IV. Debugging Commands
 Here are some useful commands for debugging:
