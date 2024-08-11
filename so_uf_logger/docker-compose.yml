@@ -28,7 +28,7 @@ services:
       splunknet:
         aliases:
           - logger
-    image: ${LOGGER_IMAGE:-ghcr.io/veben/go_random_logger/go_random_logger:latest}
+    image: ${LOGGER_IMAGE:-ghcr.io/veben/go_random_logger:latest}
     volumes:
       - ${LOGS_FOLDER}:${LOGS_FOLDER}
 
